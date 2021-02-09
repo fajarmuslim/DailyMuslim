@@ -1,8 +1,8 @@
-require('dotenv').config()
+require('dotenv').config({ silent: process.env.NODE_ENV === 'production' })
 
 const TelegramBot = require('node-telegram-bot-api');
 
-// rreplace the value below with the Telegram token you receive from @BotFather
+// replace the value below with the Telegram token you receive from @BotFather
 const token = process.env.TOKEN;
 
 // Create a bot that uses 'polling' to fetch new updates
