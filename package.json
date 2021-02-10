@@ -2,13 +2,13 @@
   "name": "dailymuslim",
   "version": "1.0.0",
   "description": "",
-  "main": "heroku.js",
+  "main": "app.js",
   "dependencies": {
     "dotenv": "^8.2.0",
     "node-telegram-bot-api": "^0.51.0"
   },
   "scripts": {
-    "start": "node heroku.js",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
