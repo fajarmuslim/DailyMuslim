@@ -5,8 +5,15 @@ const TelegramBot = require('node-telegram-bot-api');
 // replace the value below with the Telegram token you receive from @BotFather
 const token = process.env.TOKEN;
 
-// Create a bot that uses 'polling' to fetch new updates
-const bot = new TelegramBot(token, { polling: true });
+let bot;
+
+if (process.env.NODE_ENV === 'production') {
+    bot = new TelegramBot(token);
+    bot.setWebHook(process.env.HEROKU_URL + bot.token);
+} else {
+    // Create a bot that uses 'polling' to fetch new updates
+    bot = new TelegramBot(token, { polling: true });
+}
 
 // Matches "/echo [whatever]"
 bot.onText(/\/echo (.+)/, (msg, match) => {
