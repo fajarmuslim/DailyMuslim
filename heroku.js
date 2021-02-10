@@ -4,7 +4,7 @@
  */
 
 
-const TOKEN = process.env.TOKEN
+const TOKEN = process.env.TOKEN || 'YOUR_TELEGRAM_BOT_TOKEN';
 const TelegramBot = require('node-telegram-bot-api');
 const options = {
     webHook: {
@@ -20,37 +20,16 @@ const options = {
 // Add URL of your app to env variable or enable Dyno Metadata
 // to get this automatically
 // See: https://devcenter.heroku.com/articles/dyno-metadata
-const url = process.env.HEROKU_URL
-const bot;
-
-if (process.env.NODE_ENV === 'production') {
-    bot = new TelegramBot(TOKEN, options);
-    // This informs the Telegram servers of the new webhook.
-    // Note: we do not need to pass in the cert, as it already provided
-    bot.setWebHook(`${url}/bot${TOKEN}`);
-} else {
-    // Create a bot that uses 'polling' to fetch new updates
-    bot = new TelegramBot(TOKEN, { polling: true });
-}
+const url = process.env.HEROKU_URL || 'https://<app-name>.herokuapp.com:443';
+const bot = new TelegramBot(TOKEN, options);
 
 
-// Matches "/echo [whatever]"
-bot.onText(/\/echo (.+)/, (msg, match) => {
-    // 'msg' is the received Message from Telegram
-    // 'match' is the result of executing the regexp above on the text content
-    // of the message
+// This informs the Telegram servers of the new webhook.
+// Note: we do not need to pass in the cert, as it already provided
+bot.setWebHook(`${url}/bot${TOKEN}`);
 
-    const chatId = msg.chat.id;
-    const resp = match[1]; // the captured "whatever"
-
-    // send back the matched "whatever" to the chat
-    bot.sendMessage(chatId, resp);
-});
 
 // Just to ping!
 bot.on('message', function onMessage(msg) {
-    const chatId = msg.chat.id;
-
-    // send a message to the chat acknowledging receipt of their message
-    bot.sendMessage(msg.chat.id, 'I am alive!');
+    bot.sendMessage(msg.chat.id, 'I am alive on Heroku!');
 });
