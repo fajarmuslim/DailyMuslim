@@ -49,46 +49,21 @@ bot.on('message', (msg) => {
         bot.sendMessage(msg.chat.id, "Sampai jumpa kembali")
     }
 
-    var sholat = 'sholat'
-    if (msg.text.toString().toLowerCase().indexOf(sholat) === 0) {
-        try {
-            const getPrayerTimeCall = async () => {
-                const prayerTimesRes = await prayerTime.getPrayerTimeCity('boyolali')
-                console.log(prayerTimesRes.data.jadwal.data)
-                const prayerTimesParsed = JSON.parse(JSON.stringify(prayerTimesRes.data.jadwal.data))
-
-                console.log(prayerTimesParsed.ashar)
-                console.log(prayerTimesParsed.dhuha)
-                console.log(prayerTimesParsed.dzuhur)
-                console.log(prayerTimesParsed.imsak)
-                console.log(prayerTimesParsed.isya)
-                console.log(prayerTimesParsed.maghrib)
-                console.log(prayerTimesParsed.subuh)
-                console.log(prayerTimesParsed.tanggal)
-                console.log(prayerTimesParsed.terbit)
-                // bot.sendMessage(msg.chat.id, JSON.stringify(prayerTimeRes.data.jadwal.data))
-            }
-            getPrayerTimeCall()
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
     var html = 'html'
     if (msg.text.toString().toLowerCase().indexOf(html) === 0) {
-        var filehtml = "<i>asdfadsfsad</i>"
+        var filehtml = "<p>asdfadsfsad</p>"
         bot.sendMessage(msg.chat.id, filehtml, { parse_mode: "HTML" });
         // bot.sendMessage(msg.chat.id, "<b>bold</b> \n <i>italic</i> \n <em>italic with em</em> \n <a href=\"http://www.example.com/\">inline URL</a> \n <code>inline fixed-width code</code> \n <pre>pre-formatted fixed-width code block</pre>", { parse_mode: "HTML" });
         // var node = document.getElementById('my-node');
 
-        nodeHtmlToImage({
-            output: './image.png',
-            html: '<html><body>Hello world!</body></html>'
-        })
-            .then(() => {
-                console.log('The image was created successfully!')
-                bot.sendPhoto(msg.chat.id, "./image.png", { caption: "Here we go ! \nThis is just a caption " })
-            })
+        // nodeHtmlToImage({
+        //     output: './image.png',
+        //     html: '<html><body>Hello world!</body></html>'
+        // })
+        //     .then(() => {
+        //         console.log('The image was created successfully!')
+        //         bot.sendPhoto(msg.chat.id, "./image.png", { caption: "Here we go ! \nThis is just a caption " })
+        //     })
     }
 
     var markdown = 'markdown'
@@ -116,6 +91,24 @@ bot.on('message', (msg) => {
         bot.sendContact(msg.chat.id, '085728341252', 'Fajar Muslim')
     }
 })
+
+
+bot.onText(/\/sholat (.+)/, (msg, match) => {
+    const city_name = match[1]
+    try {
+        const getPrayerTimeCall = async () => {
+            const prayerTimesRes = await prayerTime.getPrayerTimeCity(city_name)
+            const prayerTimesParsed = JSON.parse(JSON.stringify(prayerTimesRes.data.jadwal.data))
+
+            var htmlfile = prayerTimesParsed.tanggal + "\n" + "===================\n" + "imsak      : " + prayerTimesParsed.imsak + "\n" + "subuh      : " + prayerTimesParsed.subuh + "\n" + "dhuha      : " + prayerTimesParsed.dhuha + "\n" + "dzuhur     : " + prayerTimesParsed.dzuhur + "\n" + "ashar       : " + prayerTimesParsed.ashar + "\n" + "maghrib  : " + prayerTimesParsed.maghrib + "\n" + "isya          : " + prayerTimesParsed.isya + "\n"
+            bot.sendMessage(msg.chat.id, htmlfile, { parse_mode: "HTML" });
+            // bot.sendMessage(msg.chat.id, JSON.stringify(prayerTimeRes.data.jadwal.data))
+        }
+        getPrayerTimeCall()
+    } catch (error) {
+        console.error(error)
+    }
+});
 
 bot.onText(/\/start/, (msg) => {
 
