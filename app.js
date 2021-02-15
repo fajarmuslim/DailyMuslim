@@ -2,6 +2,9 @@
  * This example demonstrates setting up webhook
  * on the Heroku platform.
  */
+const prayerTime = require('./prayer_time')
+const path = require('path');
+const nodeHtmlToImage = require('node-html-to-image')
 
 require('dotenv').config({ silent: process.env.NODE_ENV === 'production' })
 const TOKEN = process.env.TOKEN
@@ -33,6 +36,8 @@ if (process.env.NODE_ENV === 'production') {
     bot = new TelegramBot(TOKEN, { polling: true });
 }
 
+bot.on("polling_error", console.log);
+
 bot.on('message', (msg) => {
     var hi = 'hi'
     if (msg.text.toString().toLowerCase().indexOf(hi) === 0) {
@@ -44,9 +49,46 @@ bot.on('message', (msg) => {
         bot.sendMessage(msg.chat.id, "Sampai jumpa kembali")
     }
 
+    var sholat = 'sholat'
+    if (msg.text.toString().toLowerCase().indexOf(sholat) === 0) {
+        try {
+            const getPrayerTimeCall = async () => {
+                const prayerTimesRes = await prayerTime.getPrayerTimeCity('boyolali')
+                console.log(prayerTimesRes.data.jadwal.data)
+                const prayerTimesParsed = JSON.parse(JSON.stringify(prayerTimesRes.data.jadwal.data))
+
+                console.log(prayerTimesParsed.ashar)
+                console.log(prayerTimesParsed.dhuha)
+                console.log(prayerTimesParsed.dzuhur)
+                console.log(prayerTimesParsed.imsak)
+                console.log(prayerTimesParsed.isya)
+                console.log(prayerTimesParsed.maghrib)
+                console.log(prayerTimesParsed.subuh)
+                console.log(prayerTimesParsed.tanggal)
+                console.log(prayerTimesParsed.terbit)
+                // bot.sendMessage(msg.chat.id, JSON.stringify(prayerTimeRes.data.jadwal.data))
+            }
+            getPrayerTimeCall()
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     var html = 'html'
     if (msg.text.toString().toLowerCase().indexOf(html) === 0) {
-        bot.sendMessage(msg.chat.id, "<b>bold</b> \n <i>italic</i> \n <em>italic with em</em> \n <a href=\"http://www.example.com/\">inline URL</a> \n <code>inline fixed-width code</code> \n <pre>pre-formatted fixed-width code block</pre>", { parse_mode: "HTML" });
+        var filehtml = "<i>asdfadsfsad</i>"
+        bot.sendMessage(msg.chat.id, filehtml, { parse_mode: "HTML" });
+        // bot.sendMessage(msg.chat.id, "<b>bold</b> \n <i>italic</i> \n <em>italic with em</em> \n <a href=\"http://www.example.com/\">inline URL</a> \n <code>inline fixed-width code</code> \n <pre>pre-formatted fixed-width code block</pre>", { parse_mode: "HTML" });
+        // var node = document.getElementById('my-node');
+
+        nodeHtmlToImage({
+            output: './image.png',
+            html: '<html><body>Hello world!</body></html>'
+        })
+            .then(() => {
+                console.log('The image was created successfully!')
+                bot.sendPhoto(msg.chat.id, "./image.png", { caption: "Here we go ! \nThis is just a caption " })
+            })
     }
 
     var markdown = 'markdown'
