@@ -51,7 +51,7 @@ bot.on('message', (msg) => {
 
     var html = 'html'
     if (msg.text.toString().toLowerCase().indexOf(html) === 0) {
-        var filehtml = "<p>asdfadsfsad</p>"
+        var filehtml = "<i>asdfadsfsad</i>"
         bot.sendMessage(msg.chat.id, filehtml, { parse_mode: "HTML" });
         // bot.sendMessage(msg.chat.id, "<b>bold</b> \n <i>italic</i> \n <em>italic with em</em> \n <a href=\"http://www.example.com/\">inline URL</a> \n <code>inline fixed-width code</code> \n <pre>pre-formatted fixed-width code block</pre>", { parse_mode: "HTML" });
         // var node = document.getElementById('my-node');
@@ -88,7 +88,7 @@ bot.on('message', (msg) => {
 
     var contact = "contact";
     if (msg.text.indexOf(contact) === 0) {
-        bot.sendContact(msg.chat.id, '085728341252', 'Fajar Muslim')
+        bot.sendContact(msg.chat.id, '085231312322', 'Fajar Muslim')
     }
 })
 
