@@ -19,6 +19,7 @@ const getPrayerTime = async (city_code, date) => {
 const getPrayerTimeCity = async (city) => {
     try {
         var todayDate = new Date().toISOString().slice(0, 10);
+        console.log(todayDate)
         const cityCode = await getCityCode(city)
         return await getPrayerTime(cityCode.data.kota[0].id, todayDate)
     } catch (error) {

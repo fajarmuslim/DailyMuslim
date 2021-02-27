@@ -3,6 +3,7 @@
  * on the Heroku platform.
  */
 const prayerTime = require('./prayer_time')
+const temp = require('./temp')
 const path = require('path');
 const nodeHtmlToImage = require('node-html-to-image')
 
@@ -82,6 +83,8 @@ bot.on('message', (msg) => {
         } catch (error) {
             console.error(error)
         }
+    } else if (stringMsg.indexOf('jadwal puasa') === 0) {
+        bot.sendMessage(msg.chat.id, temp.getFasting());
     }
 
     else {
