@@ -1,7 +1,5 @@
-/**
- * This example demonstrates setting up webhook
- * on the Heroku platform.
- */
+// import required package
+
 const prayerTime = require('./prayer_time')
 const fastingTime = require('./fasting_time')
 const path = require('path');
@@ -19,30 +17,22 @@ const options = {
 const url = process.env.HEROKU_URL
 let bot;
 
+// use webhook at production and poolling at development phase
 if (process.env.NODE_ENV === 'production') {
     bot = new TelegramBot(TOKEN, options);
-    // This informs the Telegram servers of the new webhook.
-    // Note: we do not need to pass in the cert, as it already provided
     bot.setWebHook(`${url}/bot${TOKEN}`);
 } else {
-    // Create a bot that uses 'polling' to fetch new updates
     bot = new TelegramBot(TOKEN, { polling: true });
 }
 
+// print error when bot encountered error
 bot.on("polling_error", console.log);
 
 
 bot.on('message', (msg) => {
     var stringMsg = msg.text.toString().toLowerCase()
     if (stringMsg.indexOf('hi') === 0) {
-        bot.sendMessage(msg.from.id, 'id: ' + msg.from.id);
-        bot.sendMessage(msg.from.id, 'username: ' + msg.from.username);
-        bot.sendMessage(msg.from.id, 'first name: ' + msg.from.first_name);
-        bot.sendMessage(msg.from.id, 'last name:' + msg.from.last_name);
-        bot.sendMessage(msg.from.id, 'is bot: ' + msg.from.is_bot);
-        bot.sendMessage(msg.from.id, 'language code: ' + msg.from.language_code);
-
-        // bot.sendMessage(msg.from.id, "Hello " + msg.from.first_name + ", DailyMuslim siap menemani hari-harimu");
+        bot.sendMessage(msg.from.id, "Halo " + msg.from.first_name + ", DailyMuslim siap menemani kamu dalam beribadah");
     } else if (stringMsg.indexOf('help') === 0) {
         bot.sendMessage(msg.chat.id, "Silahkan pilih menu pada keyboard", {
             "reply_markup": {
@@ -62,7 +52,6 @@ bot.on('message', (msg) => {
 
                 var htmlfile = prayerTimesParsed.tanggal + "\n" + "===================\n" + "imsak      : " + prayerTimesParsed.imsak + "\n" + "subuh      : " + prayerTimesParsed.subuh + "\n" + "dhuha      : " + prayerTimesParsed.dhuha + "\n" + "dzuhur     : " + prayerTimesParsed.dzuhur + "\n" + "ashar       : " + prayerTimesParsed.ashar + "\n" + "maghrib  : " + prayerTimesParsed.maghrib + "\n" + "isya          : " + prayerTimesParsed.isya + "\n"
                 bot.sendMessage(msg.chat.id, htmlfile, { parse_mode: "HTML" });
-                // bot.sendMessage(msg.chat.id, JSON.stringify(prayerTimeRes.data.jadwal.data))
             }
             getPrayerTimeCall()
         } catch (error) {
@@ -72,26 +61,24 @@ bot.on('message', (msg) => {
         bot.sendMessage(msg.chat.id, "Perintah: puasa [nama_bulan] \n \n Contoh: puasa januari");
     } else if (stringMsg.startsWith('puasa')) {
         var arrMsg = stringMsg.split(" ")
-        const city_name = arrMsg[1]
+        const month = arrMsg[1].toLowerCase();
         try {
             const getFastingCal = async () => {
-                const fastingCalendar = await fastingTime.getFastingCalendar(city_name)
-                // for (var key of Object.fastingCalendar) {
-                //     console.log(key + "->" + fastingCalendar[key]);
-                // }
+                const fastingCalendar = await fastingTime.getFastingCalendar(month);
 
-                console.log(fastingCalendar);
+                response = 'Puasa bulan ' + month + ' \n===================\n'
                 for (var key in fastingCalendar) {
-                    if (fastingCalendar.hasOwnProperty(key)) {
-                        console.log(key + "->" + fastingCalendar[key]);
+                    response = response + key + ': '
+
+                    fastingName = fastingCalendar[key];
+                    lenFastingNameArray = fastingName.length;
+                    for (var i = 0; i < lenFastingNameArray - 1; i++) {
+                        response = response + fastingName[i] + ', ';
                     }
-                    console.log("punten");
-                    fastingCalendar[key].forEach(element => {
-                        console.log(element);
-                    });
-                    console.log("punten");
+                    response = response + fastingName[lenFastingNameArray - 1] + '\n';
+
                 }
-                bot.sendMessage(msg.chat.id, JSON.stringify(fastingCalendar));
+                bot.sendMessage(msg.chat.id, response);
             }
             getFastingCal()
         } catch (error) {
