@@ -1,5 +1,4 @@
 // import required package
-
 const prayerTime = require('./prayer_time')
 const fastingTime = require('./fasting_time')
 const path = require('path');
