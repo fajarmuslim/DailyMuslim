@@ -18,12 +18,18 @@ const getPrayerTime = async (city_code, date) => {
 
 const getPrayerTimeCity = async (city) => {
     try {
-        var todayDate = new Date().toISOString().slice(0, 10);
-        console.log(todayDate)
-        const cityCode = await getCityCode(city)
-        return await getPrayerTime(cityCode.data.kota[0].id, todayDate)
+        var jakartaTime = new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta", year: 'numeric', month: '2-digit', day: '2-digit' });
+        var splittedJakartaTime = jakartaTime.split('/');
+        var todayDate = splittedJakartaTime[2] + '-' + splittedJakartaTime[1] + '-' + splittedJakartaTime[0];
+        const cityCode = await getCityCode(city);
+
+        if (cityCode.data.kota.length !== 0) {
+            return await getPrayerTime(cityCode.data.kota[0].id, todayDate)
+        } else {
+            return "kota tidak dikenali";
+        }
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
 }
 

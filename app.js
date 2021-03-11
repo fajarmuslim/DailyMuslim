@@ -16,7 +16,7 @@ const options = {
 const url = process.env.HEROKU_URL
 let bot;
 
-// use webhook at production and poolling at development phase
+// use webhook at production and polling at development phase
 if (process.env.NODE_ENV === 'production') {
     bot = new TelegramBot(TOKEN, options);
     bot.setWebHook(`${url}/bot${TOKEN}`);
@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // print error when bot encountered error
 bot.on("polling_error", console.log);
-
+bot.on('webhook_error', console.log);
 
 bot.on('message', (msg) => {
     var stringMsg = msg.text.toString().toLowerCase()
@@ -40,24 +40,40 @@ bot.on('message', (msg) => {
             }
         });
     } else if (stringMsg.indexOf('jadwal sholat') === 0) {
-        bot.sendMessage(msg.chat.id, "Perintah: sholat [nama_kota] \n \n Contoh: sholat boyolali");
+        bot.sendMessage(msg.chat.id, "Perintah: sholat [nama_kota] \n \n Contoh: sholat boyolali \n");
     } else if (stringMsg.startsWith('sholat')) {
         var arrMsg = stringMsg.split(" ")
-        const city_name = arrMsg[1]
+        var city_name = "";
+
+        for (var i = 1; i < arrMsg.length - 1; i++) {
+            city_name = city_name + arrMsg[i] + " ";
+        }
+
+        city_name += arrMsg[arrMsg.length - 1];
+
         try {
             const getPrayerTimeCall = async () => {
-                const prayerTimesRes = await prayerTime.getPrayerTimeCity(city_name)
-                const prayerTimesParsed = JSON.parse(JSON.stringify(prayerTimesRes.data.jadwal.data))
+                const prayerTimesRes = await prayerTime.getPrayerTimeCity(city_name);
+                if (prayerTimesRes !== "kota tidak dikenali") {
+                    const prayerTimesParsed = JSON.parse(JSON.stringify(prayerTimesRes.data.jadwal.data))
 
-                var htmlfile = prayerTimesParsed.tanggal + "\n" + "===================\n" + "imsak      : " + prayerTimesParsed.imsak + "\n" + "subuh      : " + prayerTimesParsed.subuh + "\n" + "dhuha      : " + prayerTimesParsed.dhuha + "\n" + "dzuhur     : " + prayerTimesParsed.dzuhur + "\n" + "ashar       : " + prayerTimesParsed.ashar + "\n" + "maghrib  : " + prayerTimesParsed.maghrib + "\n" + "isya          : " + prayerTimesParsed.isya + "\n"
-                bot.sendMessage(msg.chat.id, htmlfile, { parse_mode: "HTML" });
+                    var htmlfile = prayerTimesParsed.tanggal + "\n" + "===================\n" + "imsak      : " + prayerTimesParsed.imsak + "\n" + "subuh      : " + prayerTimesParsed.subuh + "\n" + "dhuha      : " + prayerTimesParsed.dhuha + "\n" + "dzuhur     : " + prayerTimesParsed.dzuhur + "\n" + "ashar       : " + prayerTimesParsed.ashar + "\n" + "maghrib  : " + prayerTimesParsed.maghrib + "\n" + "isya          : " + prayerTimesParsed.isya + "\n"
+                    bot.sendMessage(msg.chat.id, htmlfile, { parse_mode: "HTML" });
+                } else {
+                    bot.sendMessage(msg.chat.id, prayerTimesRes);
+                }
             }
             getPrayerTimeCall()
         } catch (error) {
             console.error(error)
         }
     } else if (stringMsg.indexOf('jadwal puasa') === 0) {
-        bot.sendMessage(msg.chat.id, "Perintah: puasa [nama_bulan] \n \n Contoh: puasa januari");
+        var message = "Perintah: puasa [nama_bulan] \n \n Contoh: puasa januari \n \n \ Apabila ingin menambahkan jadwal puasa sunnah ke google calendar dapat mengikuti tutorial berikut: \n \
+                       ============================= \n \
+                       http://bit.ly/PuasaSunnah2021 \n \
+                       ============================= \n \ catatan: hanya dapat dilakukan melalui laptop/komputer";
+
+        bot.sendMessage(msg.chat.id, message);
     } else if (stringMsg.startsWith('puasa')) {
         var arrMsg = stringMsg.split(" ")
         const month = arrMsg[1].toLowerCase();
