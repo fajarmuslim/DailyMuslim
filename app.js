@@ -68,12 +68,13 @@ bot.on('message', (msg) => {
             console.error(error)
         }
     } else if (stringMsg.indexOf('jadwal puasa') === 0) {
-        var message = "Perintah: puasa [nama_bulan] \n \n Contoh: puasa januari \n \n \ Apabila ingin menambahkan jadwal puasa sunnah ke google calendar dapat mengikuti tutorial berikut: \n \
+        var messageAddToGCal = "Apabila ingin menambahkan jadwal puasa sunnah ke google calendar dapat mengikuti tutorial berikut: \n \
                        ============================= \n \
                        http://bit.ly/PuasaSunnah2021 \n \
                        ============================= \n \ catatan: hanya dapat dilakukan melalui laptop/komputer";
 
-        bot.sendMessage(msg.chat.id, message);
+        bot.sendMessage(msg.chat.id, "Perintah: puasa [nama_bulan] \n \n Contoh: puasa januari");
+        bot.sendMessage(msg.chat.id, messageAddToGCal);
     } else if (stringMsg.startsWith('puasa')) {
         var arrMsg = stringMsg.split(" ")
         const month = arrMsg[1].toLowerCase();
