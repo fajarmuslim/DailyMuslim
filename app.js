@@ -2,7 +2,6 @@
 const prayerTime = require('./prayer_time')
 const fastingTime = require('./fasting_time')
 const path = require('path');
-const nodeHtmlToImage = require('node-html-to-image')
 
 require('dotenv').config({ silent: process.env.NODE_ENV === 'production' })
 const TOKEN = process.env.TOKEN
