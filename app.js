@@ -68,9 +68,9 @@ bot.on('message', (msg) => {
         }
     } else if (stringMsg.indexOf('jadwal puasa') === 0) {
         var messageAddToGCal = "Apabila ingin menambahkan jadwal puasa sunnah ke google calendar dapat mengikuti tutorial berikut: \n \
-                       ============================= \n \
-                       http://bit.ly/PuasaSunnah2021 \n \
-                       ============================= \n \ catatan: hanya dapat dilakukan melalui laptop/komputer";
+                       ============================== \n \
+                       http://bit.ly/PuasaSunnah_2021 \n \
+                       ============================== \n \ catatan: hanya dapat dilakukan melalui laptop/komputer";
 
         bot.sendMessage(msg.chat.id, "Perintah: puasa [nama_bulan] \n \n Contoh: puasa januari");
         bot.sendMessage(msg.chat.id, messageAddToGCal);
