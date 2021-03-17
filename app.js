@@ -1,6 +1,7 @@
 // import required package
 const prayerTime = require('./prayer_time')
 const fastingTime = require('./fasting_time')
+const quran = require('./quran')
 const path = require('path');
 
 require('dotenv').config({ silent: process.env.NODE_ENV === 'production' })
@@ -98,6 +99,33 @@ bot.on('message', (msg) => {
             getFastingCal()
         } catch (error) {
             console.error(error)
+        }
+    } else if (stringMsg.indexOf('al-quran') === 0) {
+        bot.sendMessage(msg.chat.id, "Perintah: \n 1. Mencari 1 ayat dalam al-quran gunakan perintah: \nquran [nomor surat] [nomor ayat] \n \n Contoh: quran 2 4 \n\n2. Mencari beberapa ayat dalam al-quran secara berurutan gunakan perintah:\nquran [nomor surat] [nomor ayat mulai-nomor ayat selesai] \n\nContoh: quran 2 1-4 \n\n 3. Mencari beberapa ayat dalam al-quran secara acak gunakan perintah: quran [nomor surat] [nomor ayat,nomor ayat,nomor ayat] \n\nContoh: quran 2 1,2,5,7 \n\
+        ");
+    } else if (stringMsg.indexOf('quran') === 0) {
+        var arrMsg = stringMsg.split(" ")
+        const surahNumber = arrMsg[1].toLowerCase();
+        const ayahNumber = arrMsg[2].toLowerCase();
+
+        try {
+            const getAyahCall = async () => {
+                var getAyahResponse = await quran.getAyah(surahNumber, ayahNumber);
+                var ayahArab = getAyahResponse.ayat.data.ar;
+                var ayahIndonesian = getAyahResponse.ayat.data.id;
+
+                var message = "Surat " + getAyahResponse.surat.nama + '\n\n';
+
+                for (i = 0; i < ayahArab.length; i++) {
+                    message = message + ayahArab[i].teks + ' (' + ayahArab[i].ayat + ')' + '\n';
+                    var ayah_removed_notes_sign = ayahIndonesian[i].teks.replace(/{\d*}/g, '');
+                    message = message + ayah_removed_notes_sign + '\n';
+                }
+                bot.sendMessage(msg.chat.id, message);
+            }
+            getAyahCall();
+        } catch (error) {
+            console.error(error);
         }
     }
 

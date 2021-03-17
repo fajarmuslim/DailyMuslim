@@ -1,16 +1,6 @@
-// second.js
-// alert(colorCodes.back); // alerts `#fff`
-var colorCodes = {
-
-    back: "#fff",
-    front: "#888",
-    side: "#369"
-
-};
-console.log(colorCodes.back);
-
-function getFasting() {
-    return colorCodes.back;
-}
-
-exports.getFasting = getFasting;
+// matches a number, some characters and another number
+const reg = /{\d}/
+const str = "Segala puji  bagi Allah, Tuhan semesta alam. {3}"
+const newStr = str.replace(reg, "-");
+console.log(newStr);
+// "Java-Script"
