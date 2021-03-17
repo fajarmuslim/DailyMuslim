@@ -101,12 +101,21 @@ const getRandomAyah = async (language) => {
 // getAyah(1, 1)
 // getAyah(1, '1-7')
 // getAyah(1, '1,2,3')
-// getAyahBahasa(4, '1-3', 'id,ar,idt')
-// getAyahBahasa(4, '1-3', 'id,ar')
-// getAyahBahasa(4, '1-3', 'id,')
+// getAyahLanguage(4, '1-3', 'id,ar,idt')
+// getAyahLanguage(4, '1-3', 'id,ar')
+// getAyahLanguage(4, '1-3', 'id,')
 // getAllLanguage()
 // search('segala%20puji', 0, 10, 'id')
 // search('segala%20%2bpuji', 0, 10, 'id')
 // search('good%20%2bnight', 0, 10, 'en')
-// getDepagNote(10)
-getRandomAyah('id')
+// getDepagNote(112)
+// getRandomAyah('id')
+
+exports.getAllSurah = getAllSurah;
+exports.getSurahName = getSurahName;
+exports.getAyah = getAyah;
+exports.getAyahLanguage = getAyahLanguage;
+exports.getAllLanguage = getAllLanguage;
+exports.search = search;
+exports.getDepagNote = getDepagNote;
+exports.getRandomAyah = getRandomAyah;
