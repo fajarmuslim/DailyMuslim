@@ -1,7 +1,5 @@
 const fs = require('fs')
 
-// cb = callback
-
 function jsonReader(filePath, cb) {
     fs.readFile(filePath, (err, fileData) => {
         if (err) {
@@ -56,25 +54,5 @@ function addKajian(newKajian) {
 }
 
 // addKajian(newKajianExample)
-
-function getKajian(cityName) {
-
-    jsonReader('./kajian.json', (err, listKajian) => {
-        var res = []
-        if (err) {
-            console.log(err)
-            return
-        }
-        for (let i = 0; i < listKajian.length; i++) {
-            if (listKajian[i].city == cityName) {
-                console.log("masuk sini")
-                res.push(listKajian[i])
-                console.log(res)
-            }
-
-        }
-        console.log(res)
-    })
-}
 
 exports.jsonReader = jsonReader
