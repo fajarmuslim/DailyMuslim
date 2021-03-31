@@ -1,0 +1,22 @@
+[
+    {
+        "id": "1",
+        "theme": "Persiapan menyongsong ramadhan",
+        "speaker": "Ust. Abdul Aziz. S.T., M.T",
+        "time": "Selasa, 13 April 2021",
+        "place": "Masjid Agung Trans Studio Bandung",
+        "description": "Kajian ini terbuka untuk umum, disarankan membawa mushaf untuk mempermudah penyerapan materi",
+        "city": "bandung",
+        "status": "active"
+    },
+    {
+        "id": "2",
+        "theme": "Persiapan menyongsong ramadhan2",
+        "speaker": "Ust. Abdul Aziz. S.T., M.T",
+        "time": "Selasa, 13 April 2021",
+        "place": "Masjid Agung Trans Studio Bandung",
+        "description": "Kajian ini terbuka untuk umum, disarankan membawa mushaf untuk mempermudah penyerapan materi",
+        "city": "bandung",
+        "status": "active"
+    }
+]

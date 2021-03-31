@@ -2,6 +2,7 @@
 const prayerTime = require('./prayer_time')
 const fastingTime = require('./fasting_time')
 const quran = require('./quran')
+const kajian = require('./kajian')
 const path = require('path');
 
 require('dotenv').config({ silent: process.env.NODE_ENV === 'production' })
@@ -127,13 +128,45 @@ bot.on('message', (msg) => {
         } catch (error) {
             console.error(error);
         }
-    }
+    } else if (stringMsg.indexOf('jadwal kajian') === 0) {
+        bot.sendMessage(msg.chat.id, "Perintah: kajian [nama_kota] \n \n Contoh: kajian bandung\n");
+    } else if (stringMsg.indexOf('kajian') === 0) {
+        var arrMsg = stringMsg.split(" ")
+        const cityName = arrMsg[1].toLowerCase();
+        kajian.jsonReader('./kajian.json', (err, listKajian) => {
+            var res = []
+            if (err) {
+                console.log(err)
+                return
+            }
+            for (let i = 0; i < listKajian.length; i++) {
+                if (listKajian[i].city == cityName) {
+                    res.push(listKajian[i])
+                }
+            }
 
+            var message = "Kajian di Kota " + res[0].city.charAt(0).toUpperCase() + res[0].city.slice(1) + "\n\n";
+
+            for (let i = 0; i < res.length; i++) {
+                message = message + "Kajian ke-" + (parseInt(i) + 1) + "\n";
+                message = message + "Tema          : " + res[i].theme + "\n"
+                message = message + "Pembicara : " + res[i].speaker + "\n"
+                message = message + "Waktu         : " + res[i].time + "\n"
+                message = message + "Tempat      : " + res[i].place + "\n"
+                message = message + "Deskripsi   : " + res[i].description + "\n"
+                if (i < (res.length - 1)) {
+                    message += "\n\n"
+                }
+            }
+            bot.sendMessage(msg.chat.id, message);
+
+        })
+    }
     else {
         bot.sendMessage(msg.from.id, 'Perintah yang anda masukkan tidak tersedia dalam sistem kami');
         bot.sendMessage(msg.chat.id, "Silahkan pilih menu pada keyboard", {
             "reply_markup": {
-                "keyboard": [["Jadwal Sholat"], ["Jadwal Puasa"], ["Al-Quran"]],
+                "keyboard": [["Jadwal Sholat"], ["Jadwal Puasa"], ["Al-Quran"], ['Jadwal Kajian']],
                 "one_time_keyboard": true
             }
         });
