@@ -1,4 +1,5 @@
 // import required package
+const fs = require('fs');
 const prayerTime = require('./prayer_time')
 const fastingTime = require('./fasting_time')
 const quran = require('./quran')
@@ -70,9 +71,9 @@ bot.on('message', (msg) => {
         }
     } else if (stringMsg.indexOf('jadwal puasa') === 0) {
         var messageAddToGCal = "Apabila ingin menambahkan jadwal puasa sunnah ke google calendar dapat mengikuti tutorial berikut: \n \
-                       ============================== \n \
-                       http://bit.ly/PuasaSunnah_2021 \n \
-                       ============================== \n \ catatan: hanya dapat dilakukan melalui laptop/komputer";
+============================== \n \
+http://bit.ly/PuasaSunnah_2021 \n \
+============================== \n \ catatan: hanya dapat dilakukan melalui laptop/komputer";
 
         bot.sendMessage(msg.chat.id, "Perintah: puasa [nama_bulan] \n \n Contoh: puasa januari");
         bot.sendMessage(msg.chat.id, messageAddToGCal);
@@ -161,12 +162,16 @@ bot.on('message', (msg) => {
             bot.sendMessage(msg.chat.id, message);
 
         })
+    } else if (stringMsg.indexOf('one minute booster') === 0) {
+        let files = fs.readdirSync('one_minute/');
+        let rand = Math.floor(Math.random() * files.length);
+        bot.sendAudio(msg.chat.id, 'one_minute/' + files[rand]);
     }
     else {
         bot.sendMessage(msg.from.id, 'Perintah yang anda masukkan tidak tersedia dalam sistem kami');
         bot.sendMessage(msg.chat.id, "Silahkan pilih menu pada keyboard", {
             "reply_markup": {
-                "keyboard": [["Jadwal Sholat"], ["Jadwal Puasa"], ["Al-Quran"], ['Jadwal Kajian']],
+                "keyboard": [["Jadwal Sholat"], ["Jadwal Puasa"], ["Al-Quran"], ['Jadwal Kajian'], ['One Minute Booster']],
                 "one_time_keyboard": true
             }
         });
