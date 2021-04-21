@@ -14,20 +14,6 @@ function jsonReader(filePath, cb) {
     })
 }
 
-function jsonReader(filePath, cb) {
-    fs.readFile(filePath, (err, fileData) => {
-        if (err) {
-            return cb && cb(err)
-        }
-        try {
-            const object = JSON.parse(fileData)
-            return cb && cb(null, object)
-        } catch (err) {
-            return cb && cb(err)
-        }
-    })
-}
-
 const newKajianExample = {
     id: "1",
     theme: "Persiapan menyongsong ramadhan",
@@ -56,3 +42,4 @@ function addKajian(newKajian) {
 // addKajian(newKajianExample)
 
 exports.jsonReader = jsonReader
+exports.addKajian = addKajian
