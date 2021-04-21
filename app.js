@@ -37,7 +37,7 @@ bot.on('message', (msg) => {
     } else if (stringMsg.indexOf('help') === 0) {
         bot.sendMessage(msg.chat.id, "Silahkan pilih menu pada keyboard", {
             "reply_markup": {
-                "keyboard": [["Jadwal Sholat"], ["Jadwal Puasa"], ["Al-Quran"]],
+                "keyboard": [["Jadwal Sholat"], ["Jadwal Puasa"], ["Al-Quran"], ['Jadwal Kajian'], ['One Minute Booster']],
                 "one_time_keyboard": true
             }
         });
