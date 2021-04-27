@@ -37,7 +37,7 @@ bot.on('message', (msg) => {
     } else if (stringMsg.indexOf('help') === 0) {
         bot.sendMessage(msg.chat.id, "Silahkan pilih menu pada keyboard", {
             "reply_markup": {
-                "keyboard": [["Jadwal Sholat"], ["Jadwal Puasa"], ["Al-Quran"], ['Jadwal Kajian'], ['One Minute Booster']],
+                "keyboard": [["Jadwal Sholat"], ["Jadwal Puasa"], ["Al-Quran"], ['One Minute Booster']],
                 "one_time_keyboard": true
             }
         });
@@ -171,7 +171,7 @@ http://bit.ly/PuasaSunnah_2021 \n \
         bot.sendMessage(msg.from.id, 'Perintah yang anda masukkan tidak tersedia dalam sistem kami');
         bot.sendMessage(msg.chat.id, "Silahkan pilih menu pada keyboard", {
             "reply_markup": {
-                "keyboard": [["Jadwal Sholat"], ["Jadwal Puasa"], ["Al-Quran"], ['Jadwal Kajian'], ['One Minute Booster']],
+                "keyboard": [["Jadwal Sholat"], ["Jadwal Puasa"], ["Al-Quran"], ['One Minute Booster']],
                 "one_time_keyboard": true
             }
         });
